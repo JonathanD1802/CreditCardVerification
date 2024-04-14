@@ -1,25 +1,25 @@
-// Tous les numéros de cartes valides.
+// All valid card numbers.
 const valid1 = [4, 5, 3, 9, 6, 7, 7, 9, 0, 8, 0, 1, 6, 8, 0, 8]; 
 const valid2 = [5, 5, 3, 5, 7, 6, 6, 7, 6, 8, 7, 5, 1, 4, 3, 9]; 
 const valid3 = [3, 7, 1, 6, 1, 2, 0, 1, 9, 9, 8, 5, 2, 3, 6]; 
 const valid4 = [6, 0, 1, 1, 1, 4, 4, 3, 4, 0, 6, 8, 2, 9, 0, 5]; 
 const valid5 = [4, 5, 3, 9, 4, 0, 4, 9, 6, 7, 8, 6, 9, 6, 6, 6]; 
 
-// Tous les numéros de cartes invalides.
+// All invalid cards numbers. 
 const invalid1 = [4, 5, 3, 2, 7, 7, 8, 7, 7, 1, 0, 9, 1, 7, 9, 5]; 
 const invalid2 = [5, 7, 9, 5, 5, 9, 3, 3, 9, 2, 1, 3, 4, 6, 4, 3]; 
 const invalid3 = [3, 7, 5, 7, 9, 6, 0, 8, 4, 4, 5, 9, 9, 1, 4]; 
 const invalid4 = [6, 0, 1, 1, 1, 2, 7, 9, 6, 1, 7, 7, 7, 9, 3, 5]; 
 const invalid5 = [5, 3, 8, 2, 0, 1, 9, 7, 7, 2, 8, 8, 3, 8, 5, 4]; 
 
-// Peuvent être valide ou invalide.
+// Can be either valid and invalid. 
 const mystery1 = [3, 4, 4, 8, 0, 1, 9, 6, 8, 3, 0, 5, 4, 1, 4]; 
 const mystery2 = [5, 4, 6, 6, 1, 0, 0, 8, 6, 1, 6, 2, 0, 2, 3, 9]; 
 const mystery3 = [6, 0, 1, 1, 3, 7, 7, 0, 2, 0, 9, 6, 2, 6, 5, 6, 2, 0, 3]; 
 const mystery4 = [4, 9, 2, 9, 8, 7, 7, 1, 6, 9, 2, 1, 7, 0, 9, 3]; 
 const mystery5 = [4, 9, 1, 3, 5, 4, 0, 4, 6, 3, 0, 7, 2, 5, 2, 3]; 
 
-// Tableau contenant tous les tableaux précédents. 
+// Arrays that contains all previous arrays 
 const batch = [
     valid1, valid2, valid3, valid4, valid5, 
     invalid1, invalid2, invalid3, invalid4, invalid5,
@@ -27,36 +27,36 @@ const batch = [
 ]; 
 
 /*
-La fonction validationCarte prend en paramètre un tableau. 
-Afin de ne pas changer le tableau original, nous assignons le tableau à une nouvelle variable (tableauLuhn). 
-Pour déterminer si le numéro de carte est valide et retourner true(valide) ou false(invalide); 
-nous allons utiliser l'algorithme de Luhn.
-Puisque l'algorithme Luhn commence par le chiffre de droite, et multiplie tous les 2 nombres par 2, 
-nous allons inversé le tableau afin de faciliter sa manipulation. 
-On itère, grâce à une boucle for, afin de multiplier tous les 2 chiffre par 2 ; 
-La boucle commence à l'index 1, afin de ne pas toucher au premier élément, qui est représente l'élément de droite 
-(dans l'algorithme de Luhn). 
-Si le chiffre multiplier par 2 est supérieur à 9, alors on lui retire 9. 
-En sorti de la boucle for, on inverse de nouveau le tableau afin de l'avoir dans l'ordre original. 
-Enfin, nous additionnons tous les chiffres contenus dans le tableau, 
-et nous regardons si la somme de tous les chiffres modulo 10 est égal à 0. 
-Si la somme modulo 10 = 0 : return true (numéro de carte valide). 
-Sinon : return false (numéro de carte invalide)
- */
+The validationCard function takes an array as its parameter. 
+In order not to change the original array, we assign the array to a new variable (luhnArray). 
+To determine whether the card number is valid and return true(valid) or false(invalid); 
+we'll use the Luhn algorithm.
+Since the Luhn algorithm starts with the number on the right, and multiplies every 2 numbers by 2, 
+we're going to invert the array to make it easier to manipulate. 
+We iterate, using a for loop, to multiply all 2 numbers by 2 ; 
+The loop starts at index 1, so as not to touch the first element, which is the element on the right 
+(in Luhn's algorithm). 
+If the number multiplied by 2 is greater than 9, then 9 is subtracted from it. 
+On exiting the for loop, we invert the array again so that it is in the original order. 
+Finally, we add up all the numbers in the array 
+and see if the sum of all the digits modulo 10 equals 0. 
+If the sum modulo 10 = 0: return true (valid card number). 
+Otherwise: return false (invalid card number).
+*/
 
-const validationCarte = tableau => {
-    let tableauLuhn = tableau.toReversed();
-    for(let i = 1; i < tableauLuhn.length; i+=2){
-        tableauLuhn[i]*=2; 
-        if(tableauLuhn[i] > 9){
-            tableauLuhn[i]-=9; 
+const validationCard = arr => {
+    let luhnArray = arr.toReversed();
+    for(let i = 1; i < luhnArray.length; i+=2){
+        luhnArray[i]*=2; 
+        if(luhnArray[i] > 9){
+            luhnArray[i]-=9; 
         }; 
     };
-    tableauLuhn.reverse()
-    let additionLuhn = tableauLuhn.reduce((valeurPrecedente, valeurActuelle)=>{
-        return valeurPrecedente + valeurActuelle; 
+    luhnArray.reverse()
+    let luhnSum = luhnArray.reduce((accumulator, currentValue)=>{
+        return accumulator + currentValue; 
     })
-    if(additionLuhn % 10 === 0){
+    if(luhnSum % 10 === 0){
         return true; 
     }else{
         return false; 
@@ -64,77 +64,85 @@ const validationCarte = tableau => {
 }; 
 
 /* 
-La fonction trouverCarteInvalide admet en paramètre un tableau imbriqué, contenant des tableaux de numéros de cartes. 
-nous créons par la suite un tableau vide qui contiendra l'ensembles des numéros de carte invalide. 
-Ensuite nous itérons à travers notre tableau imbriqué afin de recupérer les tableaux de numéros de cartes contenus dans ce dernier. 
-Puis, nous utilisons la fonction validationCarte() déclaré plus haut, sur une nouvelle variable estValide, afin qu'il nous retourne
-true ou false. 
-grâce aux conditions, nous pouvons évalué si estValide est égal à false. 
-Si estValide === false, alors le numéro de carte est incorrect, et nous l'ajoutons au tableau vide déclaré en haut de la fonction. 
-Enfin, il nous reste qu'à retourné le tableau carteInvalide, une fois ce dernier complété. 
+The findInvalidCards function takes as its parameter a nested array containing arrays of card numbers. 
+We then create an empty array that will contain all the invalid arrays of card numbers. 
+We then iterate through our nested array to retrieve the arrays of card numbers contained in it. 
+Then we use the validationCard() function declared above, on a new variable isValide, to return
+true or false. 
+With conditional statements, we can evaluate whether estValide is equal to false. 
+If estValide === false, then the card number is incorrect, and we add it to the empty array declared at the top of the function. 
+Finally, all we have to do is return the array cardInvalid, once this has been completed. 
 */
-const trouverCarteInvalide=tableauImbrique=>{
-    let carteInvalide = []; 
-    for(let i=0; i < tableauImbrique.length; i++){
-        let estValide = validationCarte(tableauImbrique[i]); 
-        if(estValide === false){
-            carteInvalide.push(tableauImbrique[i]); 
+const findInvalidCards=nestedArr=>{
+    let invalidCards = []; 
+    for(let i=0; i < nestedArr.length; i++){
+        let isValide = validationCard(nestedArr[i]); 
+        if(isValide === false){
+            invalidCards.push(nestedArr[i]); 
         }; 
     }; 
-    return carteInvalide; 
+    return invalidCards; 
 }
 
 /* 
-La fonction idInvalideCompagnie va servir à trouver le nom des compagnie bancaire ayant délivré de mauvaises cartes.
-Pour cela, la fonction admet en argument un tableau imbriqué, qui contiendra tous les mauvais numéro trouvé précédemment. 
-Ensuite, nous déclarons une variable vide qui servira à stocker le nom des organismes bancaires, ainsi que des variables contenant les 
-compagnies bancaires majeures : MasterCard, Visa, American express ect....
-Puis nous itérons à travers chaque élément du tableau imbriqué, fourni en paramètre de la fonction, et avec des condition, nous regardons
-à quel numéro correspond le premier nombre des tableaux de mauvais numéro. 
-Si le premier numéro est un 3 => cela correspond à amex. 
-Si le premier numéro est un 4 => Cela corespond à visa.
-...
-Pour finir, puisque que nous ne voulons les noms des instituts bancaires qu'en 1 seul exemplaire, nous devons regarder avec la méthode de
-tableau includes, si le nom de la compagnie n'est pas déjà dans CompagnieInvalide (le tableau vide déclaré en début de fonction.). 
-Si le nom de la compagnie n'est pas dans le tableau vide, nous l'ajoutons grâce à la méthode push. 
+The idInvalidCompagnies function take as parameter a nested array. 
+We create a constant variable called compagnies that contains object. 
+Each element within the compagnies object is associate with a number which represent the first digit 
+of the element we will investigate futher. 
+With this association, we are able to determine if 
+-the first digit is 3 it will equal to Amex.
+-The first digit is 4 it will equal to Visa. 
+And so on ...
+
+Then we need two more constant : 
+One for the case the digit doesn't match with the expected ones within the compagnies object => notFound. 
+The second an empty array to store the compagnies that gave invalid credit cards numbers. => invalideCompagnies
+
+We use the for each method on the nested array given as parameter. 
+Because the nested array contains arrays with invalid numbers, 
+we need to loop in element to have the first digit => element[0].
+So, we check if the first digit of element is store in the compagnies object => compagnies[element[0]].
+
+...If the first digit is store, then the result should be not equal to undefined !==.
+Then we pay attention if the value of compagnies object is already includes in the invalidCompagnies arrays. 
+If the value is not store within invalidCompagnies : 
+(invalidCompagnies.includes(compagnies[element[0]]) === false)
+Then we push it in the invalidCompagnies arrays. 
+
+...Else the first digit is not store in the compagnies object, which compagnies[element[0]] === undifined.
+In such case, we check if the variable notFound is already in the invalidCompagnies array. 
+if not : We push it into the array. 
+
+finally, we return the invalidCompagnies arrays. 
 */
-const idInvalideCompagnie = tableauImbrique =>{
-    let CompagnieInvalide = []; 
-    let masterCard = 'MasterCard'; 
-    let visa = 'Visa'; 
-    let amex = 'Amex (American Express)'; 
-    let discover = 'Discover'
-    let notFound = 'Compagnie not found'
-    tableauImbrique.forEach(element => {
-        if(element[0] === 3){
-            if(CompagnieInvalide.includes(amex) === false){
-                CompagnieInvalide.push(amex)
-            }; 
-        }else if(element[0] === 4){
-            if(CompagnieInvalide.includes(visa) === false){
-                CompagnieInvalide.push(visa); 
-            }; 
-        }else if(element[0] === 5){
-            if(CompagnieInvalide.includes(masterCard) === false){
-                CompagnieInvalide.includes(masterCard); 
-            }; 
-        }else if(element[0] === 6){
-            if(CompagnieInvalide.includes(discover) === false){
-                CompagnieInvalide.push(discover); 
+const idInvalidCompagnies = nestedArr =>{
+    const compagnies = {
+        3: 'Amex (american Express)', 
+        4: 'Visa', 
+        5: 'MasterCard', 
+        6: 'Discover', 
+    }; 
+    const notFound = 'Company not found'; 
+    const invalidCompagnies = []; 
+
+    nestedArr.forEach(element => {
+        if(compagnies[element[0]] !== undefined){
+            if(invalidCompagnies.includes(compagnies[element[0]]) === false){
+                invalidCompagnies.push(compagnies[element[0]]); 
             }; 
         }else{
-            if(CompagnieInvalide.includes(notFound) === false){
-                CompagnieInvalide.push(notFound); 
+            if(invalidCompagnies.includes(notFound) === false){
+                invalidCompagnies.push(notFound); 
             }; 
-        }; 
+        };
     });
-    return CompagnieInvalide; 
+    return invalidCompagnies; 
 }
 
-let carteInvalide = trouverCarteInvalide(batch); 
-let compagnieCarteInvalide = idInvalideCompagnie(carteInvalide); 
+let invalidCreditCards = findInvalidCards(batch); 
+let compagniesOfInvalidCards = idInvalidCompagnies(invalidCreditCards); 
 
-console.log(compagnieCarteInvalide); 
+console.log(compagniesOfInvalidCards); 
 
 
 
